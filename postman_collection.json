@@ -1,0 +1,193 @@
+{
+  "info": {
+    "_postman_id": "sp-multiverse-api-collection-v1",
+    "name": "Multiverse OS - Spider-Verse Portfolio REST API",
+    "description": "Complete REST API Postman Collection for Spider-Verse Inspired Interactive Multiverse OS Portfolio. Includes endpoints for Projects, Skills, Experience, Achievements, Certificates, Statistics, and Contact Messages.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET Projects",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/projects",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "projects"]
+        },
+        "description": "Fetches active multiverse projects with technology stacks, image assets, category tags, and repository URLs."
+      },
+      "response": [
+        {
+          "name": "200 Success",
+          "originalRequest": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/projects" }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": "[\n  {\n    \"id\": \"p1\",\n    \"title\": \"Quantum Web-Grid Engine\",\n    \"short_description\": \"High-throughput real-time spatial physics and telemetry dashboard.\",\n    \"technologies\": [\"JavaScript (ES6+)\", \"Supabase Realtime\", \"Canvas 2D Engine\", \"GSAP\"],\n    \"category\": \"Full Stack\",\n    \"featured\": true\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "GET Skills",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/skills",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "skills"]
+        },
+        "description": "Fetches developer technical skills matrix, percentage metrics, and category taxonomy."
+      },
+      "response": [
+        {
+          "name": "200 Success",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": "[\n  {\n    \"id\": \"s1\",\n    \"skill_name\": \"JavaScript (ES6+)\",\n    \"category\": \"Frontend\",\n    \"percentage\": 98\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "GET Experience",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/experience",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "experience"]
+        },
+        "description": "Fetches career timeline entries, engineering roles, companies, and dimension tags."
+      },
+      "response": [
+        {
+          "name": "200 Success",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": "[\n  {\n    \"id\": \"e1\",\n    \"company\": \"Multiverse Web Labs\",\n    \"role\": \"Lead Interactive Web Engineer\",\n    \"duration\": \"2024 - Present\",\n    \"dimension\": \"Earth-1610\"\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "GET Achievements",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/achievements",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "achievements"]
+        },
+        "description": "Fetches hackathon awards, honors, and design recognitions."
+      },
+      "response": [
+        {
+          "name": "200 Success",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": "[\n  {\n    \"id\": \"a1\",\n    \"title\": \"Awwwards Site of the Day Candidate\",\n    \"badge\": \"WINNER\",\n    \"date\": \"2026\"\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "GET Certificates",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/certificates",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "certificates"]
+        },
+        "description": "Fetches verified cloud and engineering certifications."
+      },
+      "response": [
+        {
+          "name": "200 Success",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": "[\n  {\n    \"id\": \"c1\",\n    \"certificate_name\": \"Certified Cloud Developer & Systems Architect\",\n    \"issuer\": \"Cloud Native Computing Foundation\",\n    \"issue_date\": \"2025\"\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "GET Statistics",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/statistics",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "statistics"]
+        },
+        "description": "Fetches telemetry counts (projects, repos, technologies, certificates, experience)."
+      },
+      "response": [
+        {
+          "name": "200 Success",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": "{\n  \"total_projects\": 28,\n  \"github_repositories\": 34,\n  \"technologies\": 18,\n  \"certificates\": 8,\n  \"experience_years\": 5\n}"
+        }
+      ]
+    },
+    {
+      "name": "POST Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Miles Morales\",\n  \"email\": \"miles@spider-verse.org\",\n  \"subject\": \"Full Stack Engineering Opportunity\",\n  \"message\": \"Hey Alex, impressed by the 60FPS physics and Supabase backend architecture! Let's collaborate.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/messages",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "messages"]
+        },
+        "description": "Submits a new inter-dimensional contact message to Supabase database portal."
+      },
+      "response": [
+        {
+          "name": "201 Created",
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "body": "{\n  \"success\": true,\n  \"message\": \"Transmission received successfully!\",\n  \"id\": \"msg-992384\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://spiderverse-portfolio.vercel.app",
+      "type": "string"
+    }
+  ]
+}
