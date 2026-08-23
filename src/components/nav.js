@@ -5,150 +5,248 @@
 import { soundscape } from '../modules/audio/soundscape.js';
 import { isLiveSupabase } from '../modules/supabase/supabaseClient.js';
 
+const NAV_SECTIONS = [
+  { id: 'about', label: 'ABOUT' },
+  { id: 'skills', label: 'SKILLS' },
+  { id: 'projects', label: 'MISSIONS' },
+  { id: 'github', label: 'GITHUB' },
+  { id: 'experience', label: 'TIMELINE' },
+  { id: 'api-console', label: 'API CONSOLE' },
+  { id: 'contact', label: 'CONTACT' }
+];
+
+function buildNavLinks(className) {
+  return NAV_SECTIONS.map(({ id, label }) =>
+    `<li><a href="#${id}" class="nav-link" data-section="${id}">${label}</a></li>`
+  ).join('');
+}
+
 export function renderNav() {
   const navContainer = document.createElement('header');
   navContainer.id = 'main-header';
-  navContainer.style.cssText = `
-    position: fixed;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 92%;
-    max-width: 1200px;
-    z-index: 9999;
-    transition: all 0.3s ease;
-  `;
+
+  const statusColor = isLiveSupabase ? '#00ff66' : '#ffe600';
+  const statusBg = isLiveSupabase ? 'rgba(0,255,102,0.15)' : 'rgba(255,230,0,0.15)';
+  const statusLabel = isLiveSupabase ? 'SUPABASE LIVE' : 'HYBRID MOCK';
 
   navContainer.innerHTML = `
-    <nav class="comic-panel" style="padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; border: 3px solid #0a0a14; background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(14px);">
-      <!-- Spider Brand Badge -->
-      <a href="#hero" class="nav-brand" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-        <div style="width: 38px; height: 38px; background: #00f3ff; border: 2px solid #0a0a14; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-comic); font-size: 1.5rem; color: #0a0a14; box-shadow: 3px 3px 0 #0a0a14;">
-          ⚡
-        </div>
+    <nav class="main-nav comic-panel" aria-label="Main navigation">
+      <a href="#hero" class="nav-brand" data-section="hero" aria-label="Back to top">
+        <div class="nav-brand-badge" aria-hidden="true">⚡</div>
         <div>
-          <div style="font-family: var(--font-comic); font-size: 1.3rem; color: #ffffff; line-height: 1;" class="glitch-text" data-text="MULTIVERSE OS">MULTIVERSE OS</div>
-          <div style="font-size: 0.7rem; font-family: var(--font-code); color: #00f3ff;">EARTH-1610 // PORTFOLIO</div>
+          <div class="nav-brand-title glitch-text" data-text="MULTIVERSE OS">MULTIVERSE OS</div>
+          <div class="nav-brand-subtitle">EARTH-1610 // PORTFOLIO</div>
         </div>
       </a>
 
-      <!-- Web-Hanging Menu Links (Desktop) -->
-      <ul id="nav-links-list" style="display: flex; align-items: center; gap: 18px; list-style: none;">
-        <li><a href="#about" class="nav-link" data-section="about">ABOUT</a></li>
-        <li><a href="#skills" class="nav-link" data-section="skills">SKILLS</a></li>
-        <li><a href="#projects" class="nav-link" data-section="projects">MISSIONS</a></li>
-        <li><a href="#github" class="nav-link" data-section="github">GITHUB</a></li>
-        <li><a href="#experience" class="nav-link" data-section="experience">TIMELINE</a></li>
-        <li><a href="#api-console" class="nav-link" data-section="api-console">API CONSOLE</a></li>
-        <li><a href="#contact" class="nav-link" data-section="contact">CONTACT</a></li>
+      <ul id="nav-links-list" class="nav-links-desktop" role="list">
+        ${buildNavLinks()}
       </ul>
 
-      <!-- Action Controls: Audio Toggle, CLI Terminal Launcher, Supabase Badge -->
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <!-- Supabase Status Badge -->
-        <div class="comic-badge" style="font-size: 0.75rem; background: ${isLiveSupabase ? 'rgba(0,255,102,0.15)' : 'rgba(255,230,0,0.15)'}; color: ${isLiveSupabase ? '#00ff66' : '#ffe600'}; border-color: ${isLiveSupabase ? '#00ff66' : '#ffe600'};">
-          <span style="font-size: 0.8rem;">●</span> ${isLiveSupabase ? 'SUPABASE REALTIME' : 'HYBRID MOCK'}
+      <div class="nav-actions">
+        <div
+          class="comic-badge nav-status-badge"
+          style="background: ${statusBg}; color: ${statusColor}; border-color: ${statusColor};"
+          title="${statusLabel}"
+        >
+          <span aria-hidden="true">●</span>
+          <span class="nav-status-label">${statusLabel}</span>
         </div>
 
-        <!-- Terminal Launcher Button -->
-        <button id="nav-terminal-btn" class="btn-spider btn-spider-secondary" style="padding: 6px 12px; font-size: 0.9rem;" title="Open Developer CLI (~)">
+        <button
+          id="nav-terminal-btn"
+          class="btn-spider btn-spider-secondary nav-action-btn"
+          type="button"
+          title="Open Developer CLI (~)"
+        >
           ⌨ CLI
         </button>
 
-        <!-- Audio Toggle Button -->
-        <button id="nav-audio-btn" class="btn-spider btn-spider-secondary" style="padding: 6px 12px; font-size: 0.9rem;" title="Toggle Ambient Audio">
+        <button
+          id="nav-audio-btn"
+          class="btn-spider btn-spider-secondary nav-action-btn"
+          type="button"
+          title="Toggle Ambient Audio"
+        >
           🔇 MUTE
         </button>
 
-        <!-- Mobile Menu Toggle Button -->
-        <button id="mobile-menu-btn" style="display: none; background: none; border: none; font-size: 1.8rem; color: #00f3ff; cursor: pointer;">
-          ☰
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="nav-mobile-panel"
+        >
+          <span class="nav-hamburger-icon" aria-hidden="true">☰</span>
         </button>
       </div>
     </nav>
+
+    <div id="nav-mobile-panel" class="nav-mobile-panel" aria-hidden="true">
+      <div class="comic-panel">
+        <ul class="nav-links-mobile" role="list">
+          ${buildNavLinks()}
+        </ul>
+        <div class="nav-mobile-actions">
+          <button id="nav-mobile-terminal-btn" class="btn-spider btn-spider-secondary nav-action-btn" type="button">
+            ⌨ CLI
+          </button>
+          <button id="nav-mobile-audio-btn" class="btn-spider btn-spider-secondary nav-action-btn" type="button">
+            🔇 MUTE
+          </button>
+        </div>
+      </div>
+    </div>
   `;
 
   document.body.appendChild(navContainer);
 
-  // Styling for Web-Hanging Nav Links
-  const linkStyle = document.createElement('style');
-  linkStyle.textContent = `
-    .nav-link {
-      font-family: var(--font-comic);
-      font-size: 1.1rem;
-      color: #f0f6fc;
-      text-decoration: none;
-      letter-spacing: 1px;
-      position: relative;
-      padding: 4px 8px;
-      transition: color 0.2s ease, transform 0.2s ease;
-    }
-    .nav-link::before {
-      content: '';
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 12px;
-      background: #00f3ff;
-      opacity: 0.5;
-      transition: height 0.2s ease, opacity 0.2s ease;
-    }
-    .nav-link:hover {
-      color: #00f3ff;
-      transform: translateY(2px) rotate(-2deg);
-    }
-    .nav-link:hover::before {
-      height: 18px;
-      opacity: 1;
-      background: #ff0055;
-    }
-    .nav-link.active {
-      color: #ffe600;
-      text-shadow: 0 0 10px #ffe600;
-    }
-    @media (max-width: 900px) {
-      #nav-links-list {
-        display: none !important;
-      }
-      #mobile-menu-btn {
-        display: block !important;
-      }
-    }
-  `;
-  document.head.appendChild(linkStyle);
-
-  // Audio Toggle Handling
+  const mobileMenuBtn = navContainer.querySelector('#mobile-menu-btn');
+  const mobilePanel = navContainer.querySelector('#nav-mobile-panel');
   const audioBtn = navContainer.querySelector('#nav-audio-btn');
-  audioBtn.addEventListener('click', () => {
-    const muted = soundscape.toggleMute();
-    audioBtn.innerHTML = muted ? '🔇 MUTE' : '🔊 SOUND ON';
-    audioBtn.style.color = muted ? '#00f3ff' : '#00ff66';
-    audioBtn.style.borderColor = muted ? '#00f3ff' : '#00ff66';
-  });
-
-  // Terminal Button Launcher
+  const mobileAudioBtn = navContainer.querySelector('#nav-mobile-audio-btn');
   const terminalBtn = navContainer.querySelector('#nav-terminal-btn');
-  terminalBtn.addEventListener('click', () => {
+  const mobileTerminalBtn = navContainer.querySelector('#nav-mobile-terminal-btn');
+
+  function setMobileMenuOpen(isOpen) {
+    mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+    mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    mobilePanel.classList.toggle('is-open', isOpen);
+    mobilePanel.setAttribute('aria-hidden', String(!isOpen));
+  }
+
+  function closeMobileMenu() {
+    setMobileMenuOpen(false);
+  }
+
+  function toggleMobileMenu() {
+    const isOpen = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+    setMobileMenuOpen(!isOpen);
+    soundscape.playClick();
+  }
+
+  function updateAudioButtons(muted) {
+    const label = muted ? '🔇 MUTE' : '🔊 SOUND ON';
+    const color = muted ? '#00f3ff' : '#00ff66';
+    const borderColor = muted ? '#00f3ff' : '#00ff66';
+
+    [audioBtn, mobileAudioBtn].forEach((btn) => {
+      if (!btn) return;
+      btn.innerHTML = label;
+      btn.style.color = color;
+      btn.style.borderColor = borderColor;
+    });
+  }
+
+  function toggleAudio() {
+    const muted = soundscape.toggleMute();
+    updateAudioButtons(muted);
+    soundscape.playClick();
+  }
+
+  function openTerminal() {
     if (window.openSpiderTerminal) window.openSpiderTerminal();
+  }
+
+  mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+  audioBtn.addEventListener('click', toggleAudio);
+  mobileAudioBtn.addEventListener('click', toggleAudio);
+  terminalBtn.addEventListener('click', openTerminal);
+  mobileTerminalBtn.addEventListener('click', () => {
+    openTerminal();
+    closeMobileMenu();
   });
 
-  // Scrollspy active link highlighter
-  const sections = document.querySelectorAll('section[id]');
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY + 200;
-    sections.forEach(sec => {
-      const top = sec.offsetTop;
-      const height = sec.offsetHeight;
-      const id = sec.getAttribute('id');
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMobileMenu();
+  });
 
-      if (scrollY >= top && scrollY < top + height) {
-        document.querySelectorAll('.nav-link').forEach(link => {
-          link.classList.remove('active');
-          if (link.dataset.section === id) link.classList.add('active');
-        });
-      }
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) closeMobileMenu();
+  });
+
+  function getScrollOffset() {
+    return navContainer.offsetHeight + 16;
+  }
+
+  function smoothScrollTo(target) {
+    const offset = getScrollOffset();
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
+
+  navContainer.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const hash = link.getAttribute('href');
+      if (!hash || hash === '#') return;
+
+      const target = document.querySelector(hash);
+      if (!target) return;
+
+      event.preventDefault();
+      smoothScrollTo(target);
+      closeMobileMenu();
+      soundscape.playClick();
     });
+  });
+
+  function setActiveSection(sectionId) {
+    navContainer.querySelectorAll('.nav-link').forEach((link) => {
+      link.classList.toggle('active', link.dataset.section === sectionId);
+    });
+
+    const brand = navContainer.querySelector('.nav-brand');
+    if (brand) {
+      brand.classList.toggle('nav-brand-active', sectionId === 'hero');
+    }
+  }
+
+  function initScrollSpy() {
+    const sectionIds = ['hero', ...NAV_SECTIONS.map(({ id }) => id)];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: `-${getScrollOffset()}px 0px -45% 0px`,
+        threshold: [0, 0.15, 0.35, 0.55]
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    if (window.scrollY < 80) {
+      setActiveSection('hero');
+    }
+  }
+
+  function initStickyState() {
+    const onScroll = () => {
+      navContainer.classList.toggle('nav-scrolled', window.scrollY > 24);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  initStickyState();
+
+  // Sections render after nav; defer scroll-spy until layout is ready
+  requestAnimationFrame(() => {
+    requestAnimationFrame(initScrollSpy);
   });
 }

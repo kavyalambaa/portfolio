@@ -42,7 +42,7 @@ await renderStats();
   await renderCertificates();
   renderApiConsole();
   renderContact();
-  renderFooter();
+  await renderFooter();
 
   // 3. Launch Cinematic Loading Experience
   initLoadingScreen(() => {
